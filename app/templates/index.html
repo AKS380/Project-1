@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PII Redaction Tool</title>
+</head>
+<body style="font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px;">
+    <h2>🔍 Redact PII from Log</h2>
+    <textarea id="logInput" rows="6" style="width: 100%;"></textarea><br><br>
+    <button onclick="sendRedact()">Redact</button>
+    <h3>🔒 Redacted Log:</h3>
+    <pre id="output"></pre>
+
+    <script>
+        async function sendRedact() {
+            const input = document.getElementById("logInput").value;
+            const response = await fetch("/redact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ log_message: input })
+            });
+            const data = await response.json();
+            document.getElementById("output").textContent = data.redacted_log;
+        }
+    </script>
+</body>
+</html>
